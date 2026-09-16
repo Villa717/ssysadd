@@ -6,7 +6,7 @@ import {
 import { supabase } from "../lib/supabase";
 
 export interface EventRecord {
-  id: number;
+  event_id: number;
   title: string;
   organization: string;
   event_date: string;
@@ -41,14 +41,14 @@ export function CoordinatorInterface() {
     const { data, error } = await supabase
       .from("events")
       .select("*")
-      .order("id", { ascending: false });
+      .order("event_id", { ascending: false });
 
     if (error) {
       console.error("Error fetching queue from Supabase:", error.message);
     } else if (data) {
       setEvents(data);
       if (data.length > 0 && !selectedEventId) {
-        setSelectedEventId(data[0].id);
+        setSelectedEventId(data[0].event_id);
       }
     }
     setLoading(false);
@@ -74,7 +74,7 @@ export function CoordinatorInterface() {
     };
   }, []);
 
-  const selectedEvent = events.find((e) => e.id === selectedEventId) || events[0];
+  const selectedEvent = events.find((e) => e.event_id === selectedEventId) || events[0];
 
   // 3. Status Action Handlers
   const handleUpdateStatus = async (status: "approved" | "rejected" | "revision", feedback?: string) => {
@@ -88,7 +88,7 @@ export function CoordinatorInterface() {
         admin_feedback: feedback || null,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", selectedEvent.id);
+      .eq("event_id", selectedEvent.event_id);
 
     if (error) {
       console.error(`Failed to update status to ${status}:`, error.message);
@@ -137,11 +137,11 @@ export function CoordinatorInterface() {
           )}
 
           {events.map((item) => {
-            const isSelected = selectedEvent?.id === item.id;
+            const isSelected = selectedEvent?.event_id === item.event_id;
             return (
               <div
-                key={item.id}
-                onClick={() => setSelectedEventId(item.id)}
+                key={item.event_id}
+                onClick={() => setSelectedEventId(item.event_id)}
                 className={`p-4 rounded-xl border transition-all cursor-pointer ${
                   isSelected
                     ? "bg-[#1C2541] border-[#FDB813] shadow-md"
