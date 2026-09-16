@@ -24,7 +24,7 @@ export interface EventRecord {
 }
 
 export default function App() {
-  // your component code
+  return <CoordinatorInterface />;
 }
 
 export function CoordinatorInterface() {
