@@ -76,15 +76,18 @@ export function CoordinatorInterface() {
 
   const selectedEvent = events.find((e) => e.event_id === selectedEventId) || events[0];
 
-  // 3. Status Action Handlers
+// 3. Status Action Handlers
   const handleUpdateStatus = async (status: "approved" | "rejected" | "revision", feedback?: string) => {
     if (!selectedEvent) return;
     setActionLoading(true);
 
+    // Map "revision" to "needs_revision" to satisfy the database check constraint
+    const dbStatus = status === "revision" ? "needs_revision" : status;
+
     const { error } = await supabase
       .from("events")
       .update({
-        status,
+        status: dbStatus,
         admin_feedback: feedback || null,
         updated_at: new Date().toISOString(),
       })
@@ -92,6 +95,7 @@ export function CoordinatorInterface() {
 
     if (error) {
       console.error(`Failed to update status to ${status}:`, error.message);
+      alert(`Could not submit: ${error.message}`);
     } else {
       setShowRevisionModal(false);
       setRevisionFeedback("");
