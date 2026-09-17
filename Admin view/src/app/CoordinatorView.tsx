@@ -23,7 +23,7 @@ export interface EventRecord {
   created_at?: string;
 }
 
-export default function App() {
+export default function CoordinatorView({ onLogout }: { onLogout?: () => void }) {
   return <CoordinatorInterface />;
 }
 
