@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabase"; // Adjust to "../lib/supabase" if Ap
 
 // ── Inside Facilitator App / Component ──
 
-export default function FacilitatorApp() {
+export default function FacilitatorView({ onLogout }: { onLogout?: () => void }) {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
