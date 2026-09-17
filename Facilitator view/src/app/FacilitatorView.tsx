@@ -26,7 +26,7 @@ export default function FacilitatorView({ onLogout }: { onLogout?: () => void })
     const { data, error } = await supabase
       .from("events")
       .select("*")
-      .order("id", { ascending: false });
+      .order("event_id", { ascending: false });
 
     if (error) {
       console.error("Error fetching events:", error.message);
@@ -138,7 +138,7 @@ export default function FacilitatorView({ onLogout }: { onLogout?: () => void })
       await supabase
         .from("events")
         .update({ status: "completed" })
-        .eq("id", eventId);
+        .eq("event_id", eventId);
       
       await fetchMyEvents();
     }
