@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import CoordinatorView from "../views/CoordinatorView";
-import FacilitatorView from "../views/FacilitatorView";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectedRole, setSelectedRole] = useState<"facilitator" | "coordinator">("facilitator");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -31,31 +28,6 @@ export default function App() {
         <div className="w-full max-w-[420px] bg-white rounded-3xl p-8 shadow-xl border border-slate-100 text-center">
           <h1 className="text-2xl font-serif font-bold text-slate-900 mb-1">Login to your account</h1>
           <p className="text-xs text-slate-500 mb-6">Welcome back! Enter your details to log in.</p>
-
-          <div className="bg-[#F1F4F9] p-1 rounded-xl flex mb-6">
-            <button
-              type="button"
-              onClick={() => setSelectedRole("facilitator")}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                selectedRole === "facilitator"
-                  ? "bg-[#0E1733] text-white shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              Facilitator
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedRole("coordinator")}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                selectedRole === "coordinator"
-                  ? "bg-[#0E1733] text-white shadow-xs"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              Admin Coordinator
-            </button>
-          </div>
 
           <form onSubmit={handleLogin} className="text-left space-y-4">
             <div>
@@ -142,7 +114,7 @@ export default function App() {
         <div className="flex items-center gap-2">
           <span className="text-[#8D99AE]">Portal:</span>
           <span className="font-bold text-[#FDB813] uppercase tracking-wide">
-            {selectedRole === "coordinator" ? "Admin Coordinator" : "Facilitator"}
+            Admin Coordinator
           </span>
         </div>
 
@@ -155,11 +127,7 @@ export default function App() {
       </header>
 
       <main className="flex-1 overflow-hidden">
-        {selectedRole === "coordinator" ? (
-          <CoordinatorView onLogout={handleLogout} />
-        ) : (
-          <FacilitatorView onLogout={handleLogout} />
-        )}
+        <CoordinatorView onLogout={handleLogout} />
       </main>
     </div>
   );
